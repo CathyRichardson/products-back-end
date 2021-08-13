@@ -1,8 +1,11 @@
+// function to grab db instance
 // getDb = (req) => req.app.get('db');
 
 const create = (req, res) => {
     const dbInstance = req.app.get('db');
-    dbInstance.create_product()
+    const { name, description, price, image_url } = req.body;
+
+    dbInstance.create_product(name, description, price, image_url)
         .then(() => {
             res.sendStatus(200)
         })
@@ -14,7 +17,9 @@ const create = (req, res) => {
 
 const getOne = (req, res) => {
     const dbInstance = req.app.get('db');
-    dbInstance.read_product()
+    const { id } = req.params;
+
+    dbInstance.read_product(id)
         .then((product) => {
             res.status(200).send(product)
         })
@@ -26,6 +31,7 @@ const getOne = (req, res) => {
 
 const getAll = (req, res) => {
     const dbInstance = req.app.get('db');
+
     dbInstance.read_products()
         .then((products) => {
             res.status(200).send(products)
@@ -38,7 +44,10 @@ const getAll = (req, res) => {
 
 const update = (req, res) => {
     const dbInstance = req.app.get('db');
-    dbInstance.update_product()
+    const { id } = req.params;
+    const { desc } = req.query;
+
+    dbInstance.update_product(id, desc)
         .then(() => {
             res.sendStatus(200)
         })
@@ -50,7 +59,9 @@ const update = (req, res) => {
 
 const deleteOne = (req, res) => {
     const dbInstance = req.app.get('db');
-    dbInstance.delete_product()
+    const { id } = req.params;
+
+    dbInstance.delete_product(id)
         .then(() => {
             res.sendStatus(200)
         })
